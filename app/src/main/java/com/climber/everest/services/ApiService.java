@@ -1,6 +1,7 @@
 package com.climber.everest.services;
 
 import com.climber.everest.model.Evento;
+import com.climber.everest.model.Resultado;
 import com.climber.everest.model.Usuario;
 
 import java.util.ArrayList;
@@ -15,6 +16,11 @@ import retrofit2.http.Query;
 
 public interface ApiService {
     @POST("evento/buscaEvento")
-    Call<Evento> buscaEventos(@Query("usuario") Usuario usuario, @Header("Authorization") String token);
+    Call<Resultado> buscaEventos();
 
+    @GET("ws/13483110/json/")
+    Call<Resultado> buscaCep();
+
+    @GET("evento/testeConexao")
+    Call<Resultado> testeConexao();
 }

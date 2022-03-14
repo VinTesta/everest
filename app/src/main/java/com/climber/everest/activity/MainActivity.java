@@ -20,6 +20,7 @@ import com.climber.everest.adapter.AdapterEvento;
 import com.climber.everest.config.ApiConfig;
 import com.climber.everest.config.RetrofitConfig;
 import com.climber.everest.model.Evento;
+import com.climber.everest.model.Resultado;
 import com.climber.everest.model.Usuario;
 import com.climber.everest.services.ApiService;
 
@@ -110,28 +111,32 @@ public class MainActivity
             }
         });
         // endregion
+
+        buscaEventos();
+
     }
 
     // endregion
 
     // region Busca eventos
-//    private ArrayList buscaEventos()
-//    {
-//        ArrayList eventos = new ArrayList<Evento>();
-//
-//        for (int i = 0; i < 7; i++)
-//        {
-//            Evento evento = new Evento();
-//            evento.setTituloevento("Teste evento " + i);
-//            evento.setDescevento("Esse teste "  + i + " vai dar certo, confia!");
-//            evento.setDataevento("10/10/201" + i);
-//            evento.setHoraevento("00:00:0"+i);
-//
-//            eventos.add(evento);
-//        }
-//
-//        return eventos;
-//    }
+    private ArrayList buscaEventos()
+    {
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        apiService.testeConexao()
+            .enqueue(new Callback<Resultado>() {
+                @Override
+                public void onResponse(Call<Resultado> call, Response<Resultado> response) {
+                    Log.d("Resultado busca", "Resultado da busca foi: " + response.toString());
+                }
+
+                @Override
+                public void onFailure(Call<Resultado> call, Throwable t) {
+                    Log.e("Error", "O erro foi: " + t.toString());
+                }
+            });
+        return new ArrayList();
+    }
     // endregion
 
     // region Funções do searchview
