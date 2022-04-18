@@ -1,125 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.MainActivity">
+
+    <include layout="@layout/maintoolbar"/>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activity.MainActivity">
 
-    <View
-        android:id="@+id/viewHeaderBackground"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_125sdp"
-        android:background="@color/primary"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        <View
+            android:id="@+id/viewHeaderBackground"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_125sdp"
+            android:background="@color/primary"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
 
-    <TextView
-            android:id="@+id/textTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_marginLeft="@dimen/_16sdp"
-            android:text="@string/app_name"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_20ssp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBaseline_toTopOf="parent"
-            />
-
-    <SearchView
-        android:id="@+id/txtSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/btnOpenSearch"
-        android:layout_width="@dimen/_26sdp"
-        android:layout_height="@dimen/_26sdp"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:layout_marginRight="@dimen/_16sdp"
-        android:src="@drawable/ic_search"
-        app:layout_constraintBottom_toBottomOf="@id/textTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textTitle"
-        android:tint="@color/white"
-        />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_16sdp"
-        app:cardBackgroundColor="@color/card_background"
-        app:cardCornerRadius="@dimen/_16sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/viewHeaderBackground"
-        app:layout_constraintTop_toBottomOf="@+id/viewHeaderBackground">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <SearchView
+            android:id="@+id/txtSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_14sdp">
+            android:background="@color/background"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/meusEventosTextView"
-                android:layout_width="wrap_content"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnOpenSearch"
+            android:layout_width="@dimen/_26sdp"
+            android:layout_height="@dimen/_26sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginRight="@dimen/_16sdp"
+            android:src="@drawable/ic_search"
+            android:tint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            app:cardBackgroundColor="@color/card_background"
+            app:cardCornerRadius="@dimen/_16sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/viewHeaderBackground"
+            app:layout_constraintTop_toBottomOf="@+id/viewHeaderBackground">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Meus Eventos:"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                />
+                android:padding="@dimen/_14sdp">
 
-            <Switch
-                android:id="@+id/meusEventosSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="48dp"
-                android:minHeight="48dp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/meusEventosTextView"
-                app:layout_constraintStart_toEndOf="@id/meusEventosTextView" />
+                <TextView
+                    android:id="@+id/meusEventosTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Meus Eventos:"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/grupoEventosTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Eventos em Grupo:"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/grupoEventosSwitch"
-                />
+                <Switch
+                    android:id="@+id/meusEventosSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/meusEventosTextView"
+                    app:layout_constraintStart_toEndOf="@id/meusEventosTextView" />
 
-            <Switch
-                android:id="@+id/grupoEventosSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="48dp"
-                android:minHeight="48dp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/grupoEventosTextView"
-                app:layout_constraintEnd_toEndOf="parent" />
+                <TextView
+                    android:id="@+id/grupoEventosTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Eventos em Grupo:"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/grupoEventosSwitch" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+                <Switch
+                    android:id="@+id/grupoEventosSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/grupoEventosTextView"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerCardEvento"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardHeader" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCardEvento"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardHeader" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

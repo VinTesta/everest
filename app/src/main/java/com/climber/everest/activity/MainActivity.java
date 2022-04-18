@@ -1,15 +1,23 @@
 package com.climber.everest.activity;
 
+import static com.climber.everest.activity.LoginActivity.apiConfig;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.media.metrics.Event;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -23,6 +31,13 @@ import com.climber.everest.model.Evento;
 import com.climber.everest.model.Resultado;
 import com.climber.everest.model.Usuario;
 import com.climber.everest.services.ApiService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +58,9 @@ public class MainActivity
     private SearchView txtSearch;
     private AppCompatImageView btnOpenSearch;
     private Retrofit retrofit;
+    private Resultado resReq;
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     // endregion
 
     // region OnCreate
@@ -51,28 +69,109 @@ public class MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = findViewById(R.id.mainToolbar);
+        toolbar.setTitle("Everest");
+        setSupportActionBar(toolbar);
         // region Instanciando o serchview
         txtSearch = (SearchView) findViewById(R.id.txtSearch);
         btnOpenSearch = (AppCompatImageView) findViewById(R.id.btnOpenSearch);
         //endregion
 
-        // region Instanciando os parametros do recycler
+        // region Instanciando a retrofit
+        retrofit = RetrofitConfig.getRetrofit();
+        buscaEventos();
+        // endregion
+
+    }
+    // endregion
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.menu_logout:
+                logout();
+
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void logout()
+    {
+        try
+        {
+            mAuth.signOut();
+        }
+        catch(Exception ex)
+        {
+
+        }
+    }
+
+
+    // region Busca eventos
+    private void buscaEventos()
+    {
+        ApiService apiService = retrofit.create(ApiService.class);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            currentUser.reload();
+
+            if(apiConfig.token != "")
+            {
+                apiService.buscaEventos(apiConfig.token)
+                        .enqueue(new Callback<Resultado>() {
+                            @Override
+                            public void onResponse(Call<Resultado> call, Response<Resultado> response) {
+                                if(response.isSuccessful())
+                                {
+                                    resReq = response.body();
+                                    configRecyclerViewEventos(resReq.eventos);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Resultado> call, Throwable t) {
+                                Log.e("Error", "O erro foi: " + t.toString());
+                            }
+                        });
+            }
+            else
+            {
+                Toast toast = Toast.makeText(MainActivity.this.getApplicationContext(), "Houve um erro ao buscar os eventos", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+    }
+    // endregion
+
+    // region CONFIGURAR RECYCLER VIEW
+    public void configRecyclerViewEventos(ArrayList<Evento> eventos)
+    {
+        adapterEvento = new AdapterEvento(eventos, this);
+        adapterEvento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
         recyclerCardEvento = (RecyclerView) findViewById(R.id.recyclerCardEvento);
         recyclerCardEvento.setHasFixedSize(true);
         recyclerCardEvento.setLayoutManager(new LinearLayoutManager(this));
         recyclerCardEvento.setAdapter(adapterEvento);
-        //endregion
 
-        // region Instanciando a retrofit
-        retrofit = RetrofitConfig.getRetrofit();
-        // endregion
-
-        // region Buscando os eventos
-
-
-        // endregion
-
-        // region Abrir a busca
+        // region SEARCH VIEW EVENTOS
         btnOpenSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,9 +180,6 @@ public class MainActivity
             }
         });
 
-        // endregion
-
-        // region Fechar a busca
         txtSearch.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -94,48 +190,7 @@ public class MainActivity
         });
 
         txtSearch.setOnQueryTextListener(this);
-
         // endregion
-
-        // region AdapterEvento
-
-        Evento eTeste = new Evento();
-        eTeste.tituloevento = "Titulo de teste";
-        eventos.add(eTeste);
-
-        adapterEvento = new AdapterEvento(eventos, this);
-
-        adapterEvento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-        // endregion
-
-        buscaEventos();
-
-    }
-
-    // endregion
-
-    // region Busca eventos
-    private ArrayList buscaEventos()
-    {
-        ApiService apiService = retrofit.create(ApiService.class);
-
-        apiService.testeConexao()
-            .enqueue(new Callback<Resultado>() {
-                @Override
-                public void onResponse(Call<Resultado> call, Response<Resultado> response) {
-                    Log.d("Resultado busca", "Resultado da busca foi: " + response.toString());
-                }
-
-                @Override
-                public void onFailure(Call<Resultado> call, Throwable t) {
-                    Log.e("Error", "O erro foi: " + t.toString());
-                }
-            });
-        return new ArrayList();
     }
     // endregion
 

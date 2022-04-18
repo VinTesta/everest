@@ -4,11 +4,21 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/drawable-v24/card_evento.xml" value="0.101" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.264" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/drawable/background_input_texto.xml" value="0.264" />
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/drawable/card_evento.xml" value="0.101" />
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/drawable/ic_airplanemode_active.xml" value="0.101" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/drawable/ic_launcher_background.xml" value="0.264" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/drawable/ic_login_wave.xml" value="0.245" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/drawable/login_wave.xml" value="0.165" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/activity_cadastro.xml" value="0.33" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/activity_login.xml" value="0.29698996655518395" />
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/adapter_evento.xml" value="0.25" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/login_activity.xml" value="0.21" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/maintoolbar.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/teste.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/menu/main_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.101" />
       </map>
     </option>

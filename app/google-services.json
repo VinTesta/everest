@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "373708558202",
+    "project_id": "climber-everest",
+    "storage_bucket": "climber-everest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373708558202:android:c07abc0644cf2c8dc190c3",
+        "android_client_info": {
+          "package_name": "com.climber.everest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "373708558202-qpu5podnmktt4b91i24j99h0104m2fgd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtQ_Nb4FA_zpxM-G8m2KpvYbLFyOgA9eQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373708558202-qpu5podnmktt4b91i24j99h0104m2fgd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

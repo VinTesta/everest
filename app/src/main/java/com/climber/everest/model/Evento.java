@@ -9,6 +9,7 @@ public class Evento
     public String descevento = "";
     public String dataevento = "";
     public String horaevento = "";
+    public String statusevento = "";
 
     public Integer getIdevento() {
         return idevento;
@@ -48,5 +49,13 @@ public class Evento
 
     public void setHoraevento(String horaevento) {
         this.horaevento = horaevento;
+    }
+
+    public String getStatusevento() {
+        return statusevento;
+    }
+
+    public void setStatusevento(String statusevento) {
+        this.statusevento = statusevento;
     }
 }

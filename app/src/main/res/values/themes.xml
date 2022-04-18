@@ -3,4 +3,10 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/primary</item>
     </style>
+    <style name="Theme.Everest.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.Everest.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Everest.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
