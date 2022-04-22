@@ -25,4 +25,7 @@ public interface ApiService {
 
     @POST("/logar")
     Call<Resultado> logar(@Header("Content-type") String content_type, @Body Usuario usuario);
+
+    @POST("/cadastrarUsuario")
+    Call<Resultado> cadastroUsuario(@Header("Content-type") String content_type, @Body Usuario usuario);
 }

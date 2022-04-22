@@ -8,6 +8,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,17 +29,22 @@ import com.climber.everest.R;
 import com.climber.everest.adapter.AdapterEvento;
 import com.climber.everest.config.ApiConfig;
 import com.climber.everest.config.RetrofitConfig;
+import com.climber.everest.fragment.HomeFragment;
+import com.climber.everest.fragment.PerfilFragment;
+import com.climber.everest.fragment.SocialFragment;
 import com.climber.everest.model.Evento;
 import com.climber.everest.model.Resultado;
 import com.climber.everest.model.Usuario;
 import com.climber.everest.services.ApiService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,15 +55,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class MainActivity
-                extends AppCompatActivity
-                implements SearchView.OnQueryTextListener {
+                extends AppCompatActivity {
 
     // region Parâmetros privados
-    private RecyclerView recyclerCardEvento;
-    private List<Evento> eventos = new ArrayList<>();
-    private AdapterEvento adapterEvento;
-    private SearchView txtSearch;
-    private AppCompatImageView btnOpenSearch;
     private Retrofit retrofit;
     private Resultado resReq;
     private DatabaseReference mDatabase;
@@ -72,16 +73,12 @@ public class MainActivity
         Toolbar toolbar = findViewById(R.id.mainToolbar);
         toolbar.setTitle("Everest");
         setSupportActionBar(toolbar);
-        // region Instanciando o serchview
-        txtSearch = (SearchView) findViewById(R.id.txtSearch);
-        btnOpenSearch = (AppCompatImageView) findViewById(R.id.btnOpenSearch);
-        //endregion
 
         // region Instanciando a retrofit
         retrofit = RetrofitConfig.getRetrofit();
-        buscaEventos();
         // endregion
 
+        configuraBottomNavigation();
     }
     // endregion
 
@@ -94,6 +91,51 @@ public class MainActivity
         return super.onCreateOptionsMenu(menu);
     }
 
+
+    public void configuraBottomNavigation()
+    {
+        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavigation);
+
+//        bottomNavigationViewEx.setTextVisibility(false);
+//        bottomNavigationViewEx.enableAnimation(false);
+//        bottomNavigationViewEx.enableItemShiftingMode(true);
+//        bottomNavigationViewEx.enableShiftingMode(false);
+
+        habilitarNavegacao(bottomNavigationViewEx);
+    }
+
+    /*
+     *
+     * @param viewEx
+     */
+    private void habilitarNavegacao(BottomNavigationViewEx viewEx)
+    {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction mainFragment = fragmentManager.beginTransaction();
+
+        mainFragment.replace(R.id.mainFrameLayout, new HomeFragment()).commit();
+        viewEx.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                switch (item.getItemId())
+                {
+                    case R.id.ic_home:
+                        fragmentTransaction.replace(R.id.mainFrameLayout, new HomeFragment()).commit();
+                        break;
+                    case R.id.ic_perfil:
+                        fragmentTransaction.replace(R.id.mainFrameLayout, new PerfilFragment()).commit();
+                        break;
+                    case R.id.ic_social:
+                        fragmentTransaction.replace(R.id.mainFrameLayout, new SocialFragment()).commit();
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId())
@@ -102,6 +144,7 @@ public class MainActivity
                 logout();
 
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -118,93 +161,4 @@ public class MainActivity
 
         }
     }
-
-
-    // region Busca eventos
-    private void buscaEventos()
-    {
-        ApiService apiService = retrofit.create(ApiService.class);
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            currentUser.reload();
-
-            if(apiConfig.token != "")
-            {
-                apiService.buscaEventos(apiConfig.token)
-                        .enqueue(new Callback<Resultado>() {
-                            @Override
-                            public void onResponse(Call<Resultado> call, Response<Resultado> response) {
-                                if(response.isSuccessful())
-                                {
-                                    resReq = response.body();
-                                    configRecyclerViewEventos(resReq.eventos);
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<Resultado> call, Throwable t) {
-                                Log.e("Error", "O erro foi: " + t.toString());
-                            }
-                        });
-            }
-            else
-            {
-                Toast toast = Toast.makeText(MainActivity.this.getApplicationContext(), "Houve um erro ao buscar os eventos", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        }
-    }
-    // endregion
-
-    // region CONFIGURAR RECYCLER VIEW
-    public void configRecyclerViewEventos(ArrayList<Evento> eventos)
-    {
-        adapterEvento = new AdapterEvento(eventos, this);
-        adapterEvento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-        recyclerCardEvento = (RecyclerView) findViewById(R.id.recyclerCardEvento);
-        recyclerCardEvento.setHasFixedSize(true);
-        recyclerCardEvento.setLayoutManager(new LinearLayoutManager(this));
-        recyclerCardEvento.setAdapter(adapterEvento);
-
-        // region SEARCH VIEW EVENTOS
-        btnOpenSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnOpenSearch.setVisibility(View.GONE);
-                txtSearch.setVisibility(View.VISIBLE);
-            }
-        });
-
-        txtSearch.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                btnOpenSearch.setVisibility(View.VISIBLE);
-                txtSearch.setVisibility(View.GONE);
-                return false;
-            }
-        });
-
-        txtSearch.setOnQueryTextListener(this);
-        // endregion
-    }
-    // endregion
-
-    // region Funções do searchview
-    @Override
-    public boolean onQueryTextSubmit(String s) {
-        adapterEvento.filtrar(s);
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String s) {
-        adapterEvento.filtrar(s);
-        return false;
-    }
-    // endregion
 }

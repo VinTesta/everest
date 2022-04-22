@@ -149,6 +149,7 @@ public class LoginActivity extends AppCompatActivity {
                                                             apiConfig.token = resReq.token;
                                                             Intent i = new Intent(LoginActivity.this, MainActivity.class);
                                                             startActivity(i);
+                                                            finish();
                                                         }
                                                     } else {
 
@@ -180,8 +181,7 @@ public class LoginActivity extends AppCompatActivity {
         else
         {
 
-            Toast toast = Toast.makeText(LoginActivity.this.getApplicationContext(), "Preencha todos os campos para continuar", Toast.LENGTH_SHORT);
-            toast.show();
+            Toast.makeText(LoginActivity.this.getApplicationContext(), "Preencha todos os campos para continuar", Toast.LENGTH_SHORT).show();
 
             barraLoad.setVisibility(View.GONE);
         }
@@ -192,5 +192,6 @@ public class LoginActivity extends AppCompatActivity {
     {
         Intent i =  new Intent(LoginActivity.this, CadastroActivity.class);
         startActivity(i);
+        finish();
     }
 }

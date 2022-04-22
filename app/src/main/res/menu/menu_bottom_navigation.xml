@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/ic_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home"
+        />
+
+    <item android:id="@+id/ic_add_evento"
+        android:icon="@drawable/ic_add_outline"
+        android:title="Novo Evento"
+        />
+
+    <item android:id="@+id/ic_perfil"
+        android:icon="@drawable/ic_person_perfil"
+        android:title="Perfil"
+        />
+
+    <item android:id="@+id/ic_social"
+        android:icon="@drawable/ic_social"
+        android:title="Social"
+        />
+</menu>

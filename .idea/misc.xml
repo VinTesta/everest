@@ -15,10 +15,13 @@
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/activity_login.xml" value="0.29698996655518395" />
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/adapter_evento.xml" value="0.25" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/bottom_navigation.xml" value="0.33" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/fragment_home.xml" value="0.25729166666666664" />
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/login_activity.xml" value="0.21" />
-        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/maintoolbar.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/maintoolbar.xml" value="0.2" />
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/layout/teste.xml" value="0.19010416666666666" />
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/menu/main_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/menu/menu_bottom_navigation.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/vinicius/AndroidStudioProjects/everest/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.101" />
       </map>
     </option>
