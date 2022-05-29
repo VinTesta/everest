@@ -1,5 +1,7 @@
 package com.climber.everest.activity;
 
+import static android.content.ContentValues.TAG;
+import static com.climber.everest.activity.LoginActivity._usuarioLogado;
 import static com.climber.everest.activity.LoginActivity.apiConfig;
 
 import androidx.annotation.NonNull;
@@ -44,6 +46,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
@@ -155,10 +158,23 @@ public class MainActivity
         try
         {
             mAuth.signOut();
+            apiConfig.token = null;
+            _usuarioLogado = null;
         }
         catch(Exception ex)
         {
 
+        }
+    }
+
+    private void validaDadosUsuarioLogado(View view)
+    {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser == null)
+        {
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(i);
+            finish();
         }
     }
 }

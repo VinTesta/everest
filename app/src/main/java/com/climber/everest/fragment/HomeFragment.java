@@ -1,5 +1,6 @@
 package com.climber.everest.fragment;
 
+import static android.content.ContentValues.TAG;
 import static com.climber.everest.activity.LoginActivity.apiConfig;
 
 import android.os.Bundle;
@@ -125,14 +126,20 @@ public class HomeFragment extends Fragment
 
             if(apiConfig.token != "")
             {
+                Log.e(TAG, apiConfig.token);
+
                 apiService.buscaEventos(apiConfig.token)
                         .enqueue(new Callback<Resultado>() {
                             @Override
                             public void onResponse(Call<Resultado> call, Response<Resultado> response) {
+                                Log.e(TAG, response.toString());
+
                                 if(response.isSuccessful())
                                 {
                                     resReq = response.body();
                                     configRecyclerViewEventos(resReq.eventos, view);
+                                    Log.e(TAG, resReq.status);
+
                                 }
                             }
 

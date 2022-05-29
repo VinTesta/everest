@@ -3,6 +3,9 @@ package com.climber.everest.services;
 import com.climber.everest.model.Evento;
 import com.climber.everest.model.Resultado;
 import com.climber.everest.model.Usuario;
+import com.google.gson.JsonArray;
+
+import org.json.JSONObject;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -28,4 +31,7 @@ public interface ApiService {
 
     @POST("/cadastrarUsuario")
     Call<Resultado> cadastroUsuario(@Header("Content-type") String content_type, @Body Usuario usuario);
+
+    @POST("/usuario/alterarUsuario")
+    Call<Resultado> alterarUsuario(@Header("Content-type") String content_type, @Header("Authorization") String auth, @Body Usuario infoAlt);
 }

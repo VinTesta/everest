@@ -1,6 +1,7 @@
 package com.climber.everest.activity;
 
 import static android.content.ContentValues.TAG;
+import static com.climber.everest.activity.LoginActivity._usuarioLogado;
 import static com.climber.everest.activity.LoginActivity.apiConfig;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.climber.everest.config.ApiConfig;
 import com.climber.everest.config.RetrofitConfig;
 import com.climber.everest.model.Resultado;
 import com.climber.everest.model.Usuario;
+import com.climber.everest.repository.TokenRepository;
 import com.climber.everest.repository.UsuarioRepository;
 import com.climber.everest.services.ApiService;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +31,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -111,6 +114,7 @@ public class CadastroActivity extends AppCompatActivity {
 
     public void cadastrarUsuario(Usuario usuario)
     {
+        btnCadastrarUsuario.setEnabled(false);
         ApiService apiService = retrofit.create(ApiService.class);
 
         apiService.cadastroUsuario("application/json", usuario)
@@ -133,15 +137,16 @@ public class CadastroActivity extends AppCompatActivity {
                                                     if (usuarioFb != null) {
                                                         mDatabase.child("token").child(usuarioFb.getUid()).setValue(resReq.token);
 
+                                                        apiConfig.token = resReq.token;
+
+                                                        TokenRepository tr = new TokenRepository();
+
+                                                        Gson gson = new Gson();
+                                                        _usuarioLogado = gson.fromJson(tr.decoded(apiConfig.token), Usuario.class);
+
                                                         Intent i = new Intent(CadastroActivity.this, MainActivity.class);
                                                         startActivity(i);
                                                         finish();
-
-                                                        Toast.makeText(CadastroActivity.this.getApplicationContext(), resReq.mensagem, Toast.LENGTH_SHORT).show();
-
-                                                        progressBarCadastro.setVisibility(View.GONE);
-
-                                                        apiConfig.token = resReq.token;
                                                     }
                                                 } else {
 
@@ -152,10 +157,14 @@ public class CadastroActivity extends AppCompatActivity {
                                 //endregion
 
                             }
+
+
+                            progressBarCadastro.setVisibility(View.GONE);
+                            Toast.makeText(CadastroActivity.this.getApplicationContext(), resReq.mensagem, Toast.LENGTH_SHORT).show();
                         }
                         else
                         {
-                            Log.e("Houve um erro", "erro: "+response.toString());
+
                             Toast.makeText(CadastroActivity.this.getApplicationContext(), "Houve um erro na comunicação com a API", Toast.LENGTH_SHORT).show();
 
                             progressBarCadastro.setVisibility(View.GONE);
@@ -170,5 +179,6 @@ public class CadastroActivity extends AppCompatActivity {
                         progressBarCadastro.setVisibility(View.GONE);
                     }
                 });
+        btnCadastrarUsuario.setEnabled(true);
     }
 }

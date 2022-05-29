@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:background="@color/primary"
+    enableAnimation="false"
     app:itemIconTint="@color/white"
     app:itemTextColor="@color/primary"
     app:menu="@menu/menu_bottom_navigation" />

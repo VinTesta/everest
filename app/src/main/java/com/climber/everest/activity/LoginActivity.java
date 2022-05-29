@@ -20,6 +20,8 @@ import com.climber.everest.config.ApiConfig;
 import com.climber.everest.config.RetrofitConfig;
 import com.climber.everest.model.Resultado;
 import com.climber.everest.model.Usuario;
+import com.climber.everest.repository.TokenRepository;
+import com.climber.everest.repository.UsuarioRepository;
 import com.climber.everest.services.ApiService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,6 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     public static ApiConfig apiConfig = new ApiConfig();
     private TextView btnAbrirCadastro;
+    public static Usuario _usuarioLogado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +100,11 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else
                     {
+                        TokenRepository tr = new TokenRepository();
                         apiConfig.token = String.valueOf(task.getResult().getValue());
+
+                        Gson gson = new Gson();
+                        _usuarioLogado = gson.fromJson(tr.decoded(apiConfig.token), Usuario.class);
 
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
@@ -116,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void logar()
     {
+        btnLogar.setEnabled(false);
         if(!inputEmailUsuario.getText().toString().isEmpty() && !inputSenhaUsuario.getText().toString().isEmpty()) {
             ApiService apiService = retrofit.create(ApiService.class);
 
@@ -131,10 +140,8 @@ public class LoginActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 resReq = response.body();
 
-                                barraLoad.setVisibility(View.GONE);
-                                Log.e(TAG, resReq.status);
                                 if (resReq.status.equals("200")) {
-                                    // region CRIA USUARIO FIREBASE
+                                    // region LOGA USUARIO FIREBASE
                                     mAuth.signInWithEmailAndPassword(user.getEmailusuario(), user.getSenhausuario())
                                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                                 @Override
@@ -145,36 +152,67 @@ public class LoginActivity extends AppCompatActivity {
                                                         FirebaseUser usuarioFb = FirebaseAuth.getInstance().getCurrentUser();
                                                         if (usuarioFb != null) {
                                                             mDatabase.child("token").child(usuarioFb.getUid()).setValue(resReq.token);
-
+                                                            UsuarioRepository ur = new UsuarioRepository();
                                                             apiConfig.token = resReq.token;
+
+                                                            _usuarioLogado = resReq.usuario;
                                                             Intent i = new Intent(LoginActivity.this, MainActivity.class);
                                                             startActivity(i);
                                                             finish();
                                                         }
                                                     } else {
+                                                        // region CRIA USUARIO FIREBASE
+                                                        mAuth.createUserWithEmailAndPassword(user.getEmailusuario(), user.getSenhausuario())
+                                                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            Log.d(TAG, "createUserWithEmail:success");
 
+                                                                            FirebaseUser usuarioFb = FirebaseAuth.getInstance().getCurrentUser();
+                                                                            if (usuarioFb != null) {
+                                                                                mDatabase.child("token").child(usuarioFb.getUid()).setValue(resReq.token);
+
+                                                                                apiConfig.token = resReq.token;
+
+                                                                                TokenRepository tr = new TokenRepository();
+
+                                                                                Gson gson = new Gson();
+
+                                                                                _usuarioLogado = gson.fromJson(tr.decoded(apiConfig.token), Usuario.class);
+                                                                                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                                                                                startActivity(i);
+                                                                                finish();
+                                                                            }
+                                                                        } else {
+
+                                                                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                                                        }
+                                                                    }
+                                                                });
+                                                        //endregion
                                                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                                        Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                                                Toast.LENGTH_SHORT).show();
 
                                                     }
                                                 }
                                             });
                                     //endregion
-                                } else {
-                                    Toast toast = Toast.makeText(LoginActivity.this.getApplicationContext(), "Houve um erro ao fazer login", Toast.LENGTH_SHORT);
-                                    toast.show();
                                 }
+
+                                Toast.makeText(LoginActivity.this.getApplicationContext(), resReq.mensagem, Toast.LENGTH_SHORT).show();
                             }
                             else
                             {
-                                Log.e("Houve um erro", "erro: "+response.toString());
+                                Toast.makeText(LoginActivity.this.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
                             }
+
+                            barraLoad.setVisibility(View.GONE);
                         }
 
                         @Override
                         public void onFailure(Call<Resultado> call, Throwable t) {
                             Log.e("Error", "O erro foi: " + t.toString());
+                            barraLoad.setVisibility(View.GONE);
                         }
                     });
         }
@@ -185,6 +223,7 @@ public class LoginActivity extends AppCompatActivity {
 
             barraLoad.setVisibility(View.GONE);
         }
+        btnLogar.setEnabled(true);
 
     }
 

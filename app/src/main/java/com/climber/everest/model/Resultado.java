@@ -10,4 +10,5 @@ public class Resultado {
     public ArrayList<Evento> eventos;
     public String token;
     public Usuario usuario;
+    public String erro;
 }

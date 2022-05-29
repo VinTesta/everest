@@ -1,14 +1,34 @@
 package com.climber.everest.fragment;
 
+import static android.content.ContentValues.TAG;
+import static com.climber.everest.activity.LoginActivity._usuarioLogado;
+import static com.climber.everest.activity.LoginActivity.apiConfig;
+
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.climber.everest.activity.AlterarUsuarioActivity;
 import com.climber.everest.R;
+import com.climber.everest.model.Resultado;
+import com.google.firebase.auth.FirebaseAuth;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Retrofit;
+
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +41,16 @@ public class PerfilFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private Button btnAlterarSenha;
+    private Button btnCancelarConta;
+    private TextView emailUsuario;
+    private Retrofit retrofit;
+    private TextView diasAtivo;
+    private TextView nomeUsuario;
+    private ImageView alterarConta;
+    private CircleImageView imagemPerfil;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private Resultado resReq;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -61,6 +91,53 @@ public class PerfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_perfil, container, false);
+        View view = inflater.inflate(R.layout.fragment_perfil, container, false);
+
+        nomeUsuario = view.findViewById(R.id.nomeUsuario);
+        emailUsuario = view.findViewById(R.id.emailUsuario);
+        alterarConta = view.findViewById(R.id.alterarConta);
+
+        geraDadosUsuario(view);
+
+        alterarConta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(  view.getContext(), AlterarUsuarioActivity.class);
+                startActivity(i);
+
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+
+                HomeFragment homeFrag = new HomeFragment();
+
+                FragmentTransaction ft = fm.beginTransaction();
+
+                ft.replace(R.id.mainFrameLayout, homeFrag);
+                ft.addToBackStack(null);
+
+                ft.commit();
+            }
+        });
+
+        return view;
+    }
+
+    private void geraDadosUsuario(View view)
+    {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            currentUser.reload();
+
+            if(apiConfig.token != "")
+            {
+                Log.e(TAG, apiConfig.token);
+                nomeUsuario.setText(_usuarioLogado.nomeusuario);
+                emailUsuario.setText(_usuarioLogado.emailusuario);
+            }
+            else
+            {
+                Toast toast = Toast.makeText(getActivity(), "Houve um erro ao buscar os eventos", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
     }
 }

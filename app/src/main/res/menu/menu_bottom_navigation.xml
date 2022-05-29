@@ -10,13 +10,13 @@
         android:title="Novo Evento"
         />
 
-    <item android:id="@+id/ic_perfil"
-        android:icon="@drawable/ic_person_perfil"
-        android:title="Perfil"
-        />
-
     <item android:id="@+id/ic_social"
         android:icon="@drawable/ic_social"
         android:title="Social"
+        />
+
+    <item android:id="@+id/ic_perfil"
+        android:icon="@drawable/ic_person_perfil"
+        android:title="Perfil"
         />
 </menu>

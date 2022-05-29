@@ -22,10 +22,8 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
         android:background="@drawable/background_input_texto"
         android:ems="10"
         android:hint="E-mail"
@@ -33,48 +31,43 @@
         android:paddingStart="@dimen/_14sdp"
         android:textColor="@color/primary_text"
         android:textColorHint="@color/dashboard_item_3"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <EditText
         android:id="@+id/inputSenhaUsuario"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
+        android:background="@drawable/background_input_texto"
         android:ems="10"
-        android:paddingStart="@dimen/_14sdp"
         android:hint="Senha"
         android:inputType="textPassword"
+        android:paddingStart="@dimen/_14sdp"
         android:textColor="@color/primary_text"
         android:textColorHint="@color/dashboard_item_3"
-        android:background="@drawable/background_input_texto"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogar"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputEmailUsuario"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@+id/inputEmailUsuario" />
 
     <Button
         android:id="@+id/btnLogar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
+        android:backgroundTint="@color/primary"
         android:text="Logar"
-        app:layout_constraintBottom_toTopOf="@+id/btnAbrirCadastro"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputSenhaUsuario"
-        android:backgroundTint="@color/primary"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@+id/inputSenhaUsuario" />
 
     <TextView
         android:id="@+id/btnAbrirCadastro"
@@ -82,13 +75,14 @@
         android:layout_height="wrap_content"
         android:onClick="abrirCadastro"
         android:text="Cadastre-se"
+        android:textColor="@color/primary_text"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
-        tools:ignore="TouchTargetSizeCheck"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@+id/btnLogar"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <ImageView
         android:id="@+id/imageView2"
