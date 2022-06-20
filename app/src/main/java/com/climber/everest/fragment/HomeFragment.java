@@ -62,6 +62,7 @@ public class HomeFragment extends Fragment
     private Resultado resReq;
     private DatabaseReference mDatabase;
     private ProgressBar cardViewProgressBar;
+    private AppCompatImageView btnRefreshEventos;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public HomeFragment() {
@@ -105,12 +106,26 @@ public class HomeFragment extends Fragment
         // region Instanciando o serchview
         txtSearch = (SearchView) view.findViewById(R.id.txtSearch);
         btnOpenSearch = (AppCompatImageView) view.findViewById(R.id.btnOpenSearch);
+        btnRefreshEventos = (AppCompatImageView) view.findViewById(R.id.btnRefreshEventos);
         //endregion
+
+        recyclerCardEvento = (RecyclerView) view.findViewById(R.id.recyclerCardEvento);
 
         // region Instanciando a retrofit
         retrofit = RetrofitConfig.getRetrofit();
         buscaEventos(view);
         // endregion
+
+        btnRefreshEventos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnRefreshEventos.setEnabled(false);
+                buscaEventos(view);
+                recyclerCardEvento.setVisibility(View.GONE);
+                cardViewProgressBar.setVisibility(View.VISIBLE);
+            }
+        });
+
         return view;
     }
 
@@ -126,8 +141,6 @@ public class HomeFragment extends Fragment
 
             if(apiConfig.token != "")
             {
-                Log.e(TAG, apiConfig.token);
-
                 apiService.buscaEventos(apiConfig.token)
                         .enqueue(new Callback<Resultado>() {
                             @Override
@@ -138,8 +151,6 @@ public class HomeFragment extends Fragment
                                 {
                                     resReq = response.body();
                                     configRecyclerViewEventos(resReq.eventos, view);
-                                    Log.e(TAG, resReq.status);
-
                                 }
                             }
 
@@ -167,7 +178,6 @@ public class HomeFragment extends Fragment
             public void onClick(View view) {
             }
         });
-        recyclerCardEvento = (RecyclerView) view.findViewById(R.id.recyclerCardEvento);
         recyclerCardEvento.setHasFixedSize(true);
         recyclerCardEvento.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerCardEvento.setAdapter(adapterEvento);
@@ -179,6 +189,7 @@ public class HomeFragment extends Fragment
             @Override
             public void onClick(View view) {
                 btnOpenSearch.setVisibility(View.GONE);
+                btnRefreshEventos.setVisibility(View.GONE);
                 txtSearch.setVisibility(View.VISIBLE);
             }
         });
@@ -187,6 +198,7 @@ public class HomeFragment extends Fragment
             @Override
             public boolean onClose() {
                 btnOpenSearch.setVisibility(View.VISIBLE);
+                btnRefreshEventos.setVisibility(View.VISIBLE);
                 txtSearch.setVisibility(View.GONE);
                 return false;
             }

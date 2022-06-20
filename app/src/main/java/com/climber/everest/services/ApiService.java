@@ -34,4 +34,7 @@ public interface ApiService {
 
     @POST("/usuario/alterarUsuario")
     Call<Resultado> alterarUsuario(@Header("Content-type") String content_type, @Header("Authorization") String auth, @Body Usuario infoAlt);
+
+    @POST("/evento/adicionaEvento")
+    Call<Resultado> adicionarEvento(@Header("Content-type") String content_type, @Header("Authorization") String auth, @Body Evento evento);
 }

@@ -60,7 +60,7 @@ public class AdapterEvento
 
     public void filtrar(String txtSearch)
     {
-//        int tam = txtSearch.length();
+        //  int tam = txtSearch.length();
         eventos.clear();
         eventos.addAll(listaOriginalEventos);
 

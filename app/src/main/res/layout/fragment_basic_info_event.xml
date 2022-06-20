@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".fragment.BasicInfoEventFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:id="@+id/tituloTela"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Info. Básicas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="@dimen/_26sdp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:layout_marginStart="@dimen/_14sdp"
+        android:fontFamily="monospace"
+        android:textColor="@color/primary_text"
+        android:layout_marginRight="@dimen/_14sdp"
+        />
+
+    <EditText
+        android:id="@+id/editTextTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@drawable/background_input_texto"
+        android:ems="10"
+        android:hint="Nome do Evento"
+        android:inputType="textPersonName"
+        android:paddingStart="@dimen/_14sdp"
+        android:textColor="@color/primary_text"
+        android:textColorHint="@color/dashboard_item_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tituloTela" />
+
+
+    <Button
+        android:id="@+id/selectInitHour"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/button_config"
+        android:text="De"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:textColor="@color/primary_text"
+        android:textAlignment="textStart"
+        app:backgroundTint="@color/button_config_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTitulo" />
+
+    <TextView
+        android:id="@+id/dateInit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dom, 12 de junho de 2022 13:30"
+        app:layout_constraintEnd_toEndOf="@+id/selectInitHour"
+        app:layout_constraintTop_toTopOf="@+id/selectInitHour"
+        android:translationZ="@dimen/_14sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/selectInitHour"
+        android:textColor="@color/secondary_text"
+        android:layout_marginRight="@dimen/_14sdp"
+        />
+
+    <Button
+        android:id="@+id/selectFinishHour"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/button_config"
+        android:text="Às"
+        android:textAlignment="textStart"
+        android:textColor="@color/primary_text"
+        android:layout_marginTop="@dimen/_1sdp"
+        app:backgroundTint="@color/button_config_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectInitHour" />
+
+    <TextView
+        android:id="@+id/dateFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dom, 12 de junho de 2022 13:30"
+        app:layout_constraintEnd_toEndOf="@+id/selectFinishHour"
+        app:layout_constraintTop_toTopOf="@+id/selectFinishHour"
+        android:translationZ="@dimen/_14sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/selectFinishHour"
+        android:textColor="@color/secondary_text"
+        android:layout_marginRight="@dimen/_14sdp"
+        />
+
+    <Button
+        android:id="@+id/selectLembrete"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/button_config"
+        android:text="Lembretes"
+        android:layout_marginTop="@dimen/_22sdp"
+        android:textColor="@color/primary_text"
+        android:textAlignment="textStart"
+        app:backgroundTint="@color/button_config_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectFinishHour" />
+
+    <TextView
+        android:id="@+id/textLembrete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5 minutos antes"
+        app:layout_constraintEnd_toEndOf="@+id/selectLembrete"
+        app:layout_constraintTop_toTopOf="@+id/selectLembrete"
+        android:translationZ="@dimen/_14sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/selectLembrete"
+        android:textColor="@color/secondary_text"
+        android:layout_marginRight="@dimen/_14sdp"
+        />
+
+    <Button
+        android:id="@+id/selectFusoHorario"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/button_config"
+        android:text="Fuso Horário"
+        android:layout_marginTop="@dimen/_22sdp"
+        android:textColor="@color/primary_text"
+        android:textAlignment="textStart"
+        app:backgroundTint="@color/button_config_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectLembrete" />
+
+    <TextView
+        android:id="@+id/textFusoHorario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(GMT-3:00) Horário Padrão de Brasília"
+        app:layout_constraintEnd_toEndOf="@+id/selectFusoHorario"
+        app:layout_constraintTop_toTopOf="@+id/selectFusoHorario"
+        android:translationZ="@dimen/_14sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/selectFusoHorario"
+        android:textColor="@color/secondary_text"
+        android:layout_marginRight="@dimen/_14sdp"
+        />
+
+    <EditText
+        android:id="@+id/editTextDescricao"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="@dimen/_22sdp"
+        android:background="@drawable/background_input_texto"
+        android:ems="10"
+        android:hint="Descrição"
+        android:inputType="textPersonName"
+        android:paddingStart="@dimen/_14sdp"
+        android:textColor="@color/primary_text"
+        android:textColorHint="@color/dashboard_item_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectFusoHorario" />
+</androidx.constraintlayout.widget.ConstraintLayout>

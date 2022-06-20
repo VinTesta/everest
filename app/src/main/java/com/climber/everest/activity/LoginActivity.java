@@ -1,11 +1,16 @@
 package com.climber.everest.activity;
 
+import static android.Manifest.permission.ACCESS_BACKGROUND_LOCATION;
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -58,6 +63,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        if(ActivityCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(LoginActivity.this,
+                    new String[]{ACCESS_FINE_LOCATION}, 1);
+        }
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -125,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
     public void logar()
     {
         btnLogar.setEnabled(false);
+        btnAbrirCadastro.setEnabled(false);
         if(!inputEmailUsuario.getText().toString().isEmpty() && !inputSenhaUsuario.getText().toString().isEmpty()) {
             ApiService apiService = retrofit.create(ApiService.class);
 
@@ -224,6 +236,7 @@ public class LoginActivity extends AppCompatActivity {
             barraLoad.setVisibility(View.GONE);
         }
         btnLogar.setEnabled(true);
+        btnAbrirCadastro.setEnabled(true);
 
     }
 

@@ -12,4 +12,6 @@
     <color name="dashboard_item_4">#8B72FF</color>
     <color name="red_button">#FF6054</color>
     <color name="input_color">#11000000</color>
+    <color name="button_config_color">#EFEFEF</color>
+    <color name="wave">#5679c7</color>
 </resources>

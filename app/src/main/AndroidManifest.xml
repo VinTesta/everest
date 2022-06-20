@@ -3,6 +3,7 @@
     package="com.climber.everest">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -11,6 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Everest">
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBcG7ix0dEn-pCGWJaW5dtf0Z5t3xgJOLY"/>
+        <activity
+            android:name=".activity.EventInfoActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.AlterarUsuarioActivity"
             android:exported="false"
