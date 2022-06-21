@@ -108,7 +108,7 @@ public class AddressEventFragment extends Fragment implements OnMapReadyCallback
         editTextLocalizacao = view.findViewById(R.id.editTextLocalizacao);
         selectEnableLoc = view.findViewById(R.id.selectEnableLoc);
 
-        LocalDateTime dataAtual = LocalDateTime.now();
+//        LocalDateTime dataAtual = LocalDateTime.now();
 
         selectEnableLoc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
