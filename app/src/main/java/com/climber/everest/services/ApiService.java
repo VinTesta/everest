@@ -1,6 +1,7 @@
 package com.climber.everest.services;
 
 import com.climber.everest.model.Evento;
+import com.climber.everest.model.RequestBody;
 import com.climber.everest.model.Resultado;
 import com.climber.everest.model.Usuario;
 import com.google.gson.JsonArray;
@@ -36,5 +37,5 @@ public interface ApiService {
     Call<Resultado> alterarUsuario(@Header("Content-type") String content_type, @Header("Authorization") String auth, @Body Usuario infoAlt);
 
     @POST("/evento/adicionaEvento")
-    Call<Resultado> adicionarEvento(@Header("Content-type") String content_type, @Header("Authorization") String auth, @Body Evento evento);
+    Call<Resultado> adicionarEvento(@Header("Content-type") String content_type, @Header("Authorization") String auth, @Body RequestBody infoEvento);
 }

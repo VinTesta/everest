@@ -31,7 +31,9 @@ import com.climber.everest.fragment.BasicInfoEventFragment;
 import com.climber.everest.fragment.HomeFragment;
 import com.climber.everest.fragment.PerfilFragment;
 import com.climber.everest.fragment.SocialFragment;
+import com.climber.everest.model.Endereco;
 import com.climber.everest.model.Evento;
+import com.climber.everest.model.RequestBody;
 import com.climber.everest.model.Resultado;
 import com.climber.everest.services.ApiService;
 import com.climber.everest.services.InterfaceComunicacaoFragment;
@@ -40,6 +42,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -60,6 +65,7 @@ public class EventInfoActivity extends AppCompatActivity implements InterfaceCom
     private Evento infoEvento;
     private Retrofit retrofit;
     private Resultado resReq;
+    private int statusEndereco;
 
     @Override
     public void setLocalizacao(LatLng latLng)
@@ -71,6 +77,8 @@ public class EventInfoActivity extends AppCompatActivity implements InterfaceCom
     {
         infoEvento = evento;
     }
+
+    public void setEnableEndereco(int i){statusEndereco = i;}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,11 +147,6 @@ public class EventInfoActivity extends AppCompatActivity implements InterfaceCom
         btnConfirmarEvento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("Localização atual: ", "Latitude: "+localizacaoEvento.latitude+" Longitude: "+localizacaoEvento.longitude);
-                Log.e("Data inicio", "Data inicio: "+infoEvento.dataInicioEvento);
-                Log.e("Data inicio", "Data inicio: "+infoEvento.dataFimEvento);
-                Log.e("Titulo evento", "Titulo: "+infoEvento.tituloevento);
-                Log.e("Desc evento", "Desc: "+infoEvento.descevento);
 
                 adicionaEvento(infoEvento);
             }
@@ -166,7 +169,11 @@ public class EventInfoActivity extends AppCompatActivity implements InterfaceCom
                 )
             {
 
-                apiService.adicionarEvento("application/json", apiConfig.token, evento)
+                RequestBody req = new RequestBody();
+                req.evento = infoEvento;
+                req.endereco = new Endereco('1', String.valueOf(localizacaoEvento.latitude), String.valueOf(localizacaoEvento.longitude));
+
+                apiService.adicionarEvento("application/json", apiConfig.token, req)
                         .enqueue(new Callback<Resultado>() {
                             @Override
                             public void onResponse(Call<Resultado> call, Response<Resultado> response) {

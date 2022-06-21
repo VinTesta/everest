@@ -27,7 +27,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.climber.everest.R;
@@ -46,6 +48,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -71,6 +74,7 @@ public class AddressEventFragment extends Fragment implements OnMapReadyCallback
     public Marker marcadorPrincipal;
     public EditText editTextLocalizacao;
     public LatLng localizacaoEvento;
+    public Switch selectEnableLoc;
 
     private InterfaceComunicacaoFragment listener;
 
@@ -102,6 +106,22 @@ public class AddressEventFragment extends Fragment implements OnMapReadyCallback
         mapView.getMapAsync(this);
 
         editTextLocalizacao = view.findViewById(R.id.editTextLocalizacao);
+        selectEnableLoc = view.findViewById(R.id.selectEnableLoc);
+
+        LocalDateTime dataAtual = LocalDateTime.now();
+
+        selectEnableLoc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    listener.setEnableEndereco(1);
+                    editTextLocalizacao.setEnabled(true);
+                } else {
+                    listener.setEnableEndereco(0);
+                    editTextLocalizacao.setEnabled(false);
+                }
+            }
+        });
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -120,6 +140,8 @@ public class AddressEventFragment extends Fragment implements OnMapReadyCallback
                 selecionaLocal(latLng);
             }
         };
+
+
 
         editTextLocalizacao.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

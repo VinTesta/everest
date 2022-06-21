@@ -7,4 +7,6 @@ public interface InterfaceComunicacaoFragment {
     void setLocalizacao(LatLng localizacao);
 
     void setEvento(Evento evento);
+
+    void setEnableEndereco(int i);
 }
