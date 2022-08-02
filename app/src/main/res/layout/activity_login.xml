@@ -18,6 +18,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_login_wave" />
 
+
+    <TextView
+        android:id="@+id/textLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="abrirCadastro"
+        android:text="LOGIN"
+        android:textColor="@color/primary_text"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:textSize="@dimen/_20sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/inputEmailUsuario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        tools:ignore="TouchTargetSizeCheck" />
+
     <EditText
         android:id="@+id/inputEmailUsuario"
         android:layout_width="0dp"
@@ -35,7 +53,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textLogin" />
 
     <EditText
         android:id="@+id/inputSenhaUsuario"
@@ -90,7 +108,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/textLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

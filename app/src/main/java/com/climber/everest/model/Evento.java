@@ -29,6 +29,7 @@ public class Evento
     public Character lembrete = '1';
     public String dataInicioEvento;
     public String dataFimEvento;
+    public Endereco endereco;
 
     public Evento() {
         meses.add("Janeiro");
@@ -69,14 +70,6 @@ public class Evento
         this.descevento = descevento;
     }
 
-    public String getStatusevento() {
-        return status;
-    }
-
-    public void setStatusevento(String statusevento) {
-        this.status = statusevento;
-    }
-
     public Character getLembrete() {
         return lembrete;
     }
@@ -99,6 +92,22 @@ public class Evento
 
     public void setDataFimEvento(String dataFimEvento) {
         this.dataFimEvento = dataFimEvento.substring(0, 11);
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
     public void selectDateTime(View view, TextView textView, String selectData)

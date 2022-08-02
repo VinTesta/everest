@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     public static ApiConfig apiConfig = new ApiConfig();
     private TextView btnAbrirCadastro;
     public static Usuario _usuarioLogado;
+    private TextView textLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogar = findViewById(R.id.btnLogar);
         barraLoad = findViewById(R.id.barraLoad);
         btnAbrirCadastro = findViewById(R.id.btnAbrirCadastro);
+        textLogin = findViewById(R.id.textLogin);
 
         retrofit = RetrofitConfig.getRetrofit();
 
@@ -130,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
             inputSenhaUsuario.setVisibility(View.VISIBLE);
             btnLogar.setVisibility(View.VISIBLE);
             btnAbrirCadastro.setVisibility(View.VISIBLE);
+            textLogin.setVisibility(View.VISIBLE);
         }
     }
 

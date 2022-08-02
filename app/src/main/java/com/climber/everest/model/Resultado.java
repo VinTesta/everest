@@ -8,6 +8,7 @@ public class Resultado {
     public String status;
     public String mensagem;
     public ArrayList<Evento> eventos;
+    public Evento evento;
     public String token;
     public Usuario usuario;
     public String erro;

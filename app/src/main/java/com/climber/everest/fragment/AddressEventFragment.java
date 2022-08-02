@@ -5,6 +5,10 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.ContentValues.TAG;
 
+import static com.climber.everest.activity.LoginActivity.apiConfig;
+
+import static java.lang.Double.parseDouble;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -17,6 +21,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -35,7 +40,12 @@ import android.widget.TextView;
 import com.climber.everest.R;
 import com.climber.everest.activity.EventInfoActivity;
 import com.climber.everest.activity.LoginActivity;
+import com.climber.everest.config.RetrofitConfig;
+import com.climber.everest.model.Endereco;
 import com.climber.everest.model.Evento;
+import com.climber.everest.model.RequestBody;
+import com.climber.everest.model.Resultado;
+import com.climber.everest.services.ApiService;
 import com.climber.everest.services.InterfaceComunicacaoFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -46,11 +56,18 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,8 +92,23 @@ public class AddressEventFragment extends Fragment implements OnMapReadyCallback
     public EditText editTextLocalizacao;
     public LatLng localizacaoEvento;
     public Switch selectEnableLoc;
+    private Retrofit retrofit;
+    private Geocoder geocoder;
+    private Endereco endereco;
+    private Resultado resReq;
+    private RequestBody req;
+    private ConstraintLayout backloadAddress;
 
     private InterfaceComunicacaoFragment listener;
+
+    // TODO: Rename and change types and number of parameters
+    public static AddressEventFragment newInstance(String param1) {
+        AddressEventFragment fragment = new AddressEventFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public AddressEventFragment() {
         // Required empty public constructor
@@ -95,10 +127,21 @@ public class AddressEventFragment extends Fragment implements OnMapReadyCallback
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_address_event, container, false);
+
+        geocoder = new Geocoder(getContext(), Locale.getDefault());
+        req = new RequestBody();
 
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) view.findViewById(R.id.mapView);
@@ -107,6 +150,9 @@ public class AddressEventFragment extends Fragment implements OnMapReadyCallback
 
         editTextLocalizacao = view.findViewById(R.id.editTextLocalizacao);
         selectEnableLoc = view.findViewById(R.id.selectEnableLoc);
+        backloadAddress = view.findViewById(R.id.backloadAddress);
+
+        listener.setEnableEndereco(0);
 
 //        LocalDateTime dataAtual = LocalDateTime.now();
 
@@ -140,8 +186,6 @@ public class AddressEventFragment extends Fragment implements OnMapReadyCallback
                 selecionaLocal(latLng);
             }
         };
-
-
 
         editTextLocalizacao.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -182,18 +226,53 @@ public class AddressEventFragment extends Fragment implements OnMapReadyCallback
             }
         });
 
+        // region Instanciando a retrofit
+        retrofit = RetrofitConfig.getRetrofit();
+        // endregion
+
+        if(mParam1 != null)
+        {
+            backloadAddress.setVisibility(View.VISIBLE);
+            ApiService apiService = retrofit.create(ApiService.class);
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            if(currentUser != null){
+                currentUser.reload();
+
+                req.evento.setIdevento(Integer.valueOf(mParam1));
+
+                apiService.buscaInfoEvento("application/json", apiConfig.token, req)
+                        .enqueue(new Callback<Resultado>() {
+                            @Override
+                            public void onResponse(Call<Resultado> call, Response<Resultado> response) {
+                                Log.e(TAG, response.toString());
+
+                                if(response.isSuccessful())
+                                {
+                                    resReq = response.body();
+
+                                    Log.e("O ID", "Id end: "+ resReq.evento.endereco.getIdeventoendereco());
+                                    if(resReq.evento.endereco.getLatitude() != null && resReq.evento.endereco.getLongitude() != null)
+                                    {
+                                        Log.e("Tem end?", "Tem endereço");
+                                        selecionaLocal(new LatLng(parseDouble(resReq.evento.endereco.getLatitude()), parseDouble(resReq.evento.endereco.getLongitude())));
+                                    }
+                                }
+
+                                backloadAddress.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onFailure(Call<Resultado> call, Throwable t) {
+                                Log.e("Error", "O erro foi: " + t.toString());
+                                backloadAddress.setVisibility(View.GONE);
+                            }
+                        });
+            }
+        }
+
         return view;
 
-    }
-
-    // TODO: Rename and change types and number of parameters
-    public static AddressEventFragment newInstance(String param1, String param2) {
-        AddressEventFragment fragment = new AddressEventFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -282,7 +361,6 @@ public class AddressEventFragment extends Fragment implements OnMapReadyCallback
 
     private void selecionaLocal(LatLng latLng)
     {
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         try {
             List<Address> listaEndereco = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
             if(listaEndereco != null && listaEndereco.size() > 0)

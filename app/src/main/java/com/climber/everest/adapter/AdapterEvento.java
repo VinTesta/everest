@@ -1,10 +1,15 @@
 package com.climber.everest.adapter;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
+import android.content.Intent;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +23,8 @@ import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
 import com.climber.everest.R;
+import com.climber.everest.activity.EventInfoActivity;
+import com.climber.everest.activity.MainActivity;
 import com.climber.everest.model.Evento;
 
 import java.util.ArrayList;
@@ -56,6 +63,17 @@ public class AdapterEvento
         Evento evento = eventos.get( position );
         holder.titulo.setText( evento.getTituloevento() );
         holder.descricao.setText( evento.getDescevento() );
+        holder.iconLoc.setVisibility( evento.endereco.getLatitude() != null ? View.VISIBLE : View.GONE );
+        holder.iconLembrete.setVisibility( evento.getLembrete() > 0 ? View.VISIBLE : View.GONE );
+
+        holder.btnEditCardAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(con, EventInfoActivity.class);
+                i.putExtra("idevento", String.valueOf(evento.idevento));
+                con.startActivity(i);
+            }
+        });
     }
 
     public void filtrar(String txtSearch)
@@ -115,6 +133,9 @@ public class AdapterEvento
     {
         TextView titulo;
         TextView descricao;
+        ImageView iconLoc;
+        ImageView iconLembrete;
+        Button btnEditCardAdapter;
 
         public MyViewHolder(View itemView)
         {
@@ -122,6 +143,9 @@ public class AdapterEvento
 
             titulo = itemView.findViewById(R.id.titleCardAdpter);
             descricao = itemView.findViewById(R.id.descCardAdapter);
+            iconLoc = itemView.findViewById(R.id.mapIconCardAdapter);
+            iconLembrete = itemView.findViewById(R.id.watchIconCardAdapter);
+            btnEditCardAdapter = itemView.findViewById(R.id.btnEditCardAdapter);
         }
     }
 }

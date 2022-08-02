@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -61,11 +62,13 @@ public class EventInfoActivity extends AppCompatActivity implements InterfaceCom
     private Fragment addressInfo;
     private ImageView btnConfirmarEvento;
     private ImageView btnFecharEvento;
-    private LatLng localizacaoEvento;
-    private Evento infoEvento;
+    private LatLng localizacaoEvento = new LatLng(0, 0);
+    private Evento infoEvento = new Evento();
     private Retrofit retrofit;
     private Resultado resReq;
     private int statusEndereco;
+    private ProgressBar progressBar2;
+    private Intent intent;
 
     @Override
     public void setLocalizacao(LatLng latLng)
@@ -88,12 +91,21 @@ public class EventInfoActivity extends AppCompatActivity implements InterfaceCom
         basicInfo = new BasicInfoEventFragment();
         addressInfo = new AddressEventFragment();
 
+        Bundle dados = getIntent().getExtras();
+        if(dados != null) {
+            String idevento = dados.getString("idevento");
+            basicInfo = BasicInfoEventFragment.newInstance(idevento);
+            addressInfo = AddressEventFragment.newInstance(idevento);
+        }
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.tabFrameLayout, addressInfo);
         fragmentTransaction.add(R.id.tabFrameLayout, basicInfo);
         fragmentTransaction.hide(addressInfo);
         fragmentTransaction.commit();
+
+        progressBar2 = findViewById(R.id.progressBar2);
 
         tabLayout = findViewById(R.id.tabLayout);
         tabFrameLayout = findViewById(R.id.tabFrameLayout);
@@ -163,15 +175,18 @@ public class EventInfoActivity extends AppCompatActivity implements InterfaceCom
 
             if(
                     apiConfig.token != "" &&
-                    evento.getDataFimEvento() != "" &&
-                    evento.getDataInicioEvento() != "" &&
+                    (evento.getDataFimEvento() != "" && evento.getDataFimEvento() != null) &&
+                    (evento.getDataInicioEvento() != "" && evento.getDataInicioEvento() != null) &&
                     evento.getTituloevento() != ""
                 )
             {
 
                 RequestBody req = new RequestBody();
                 req.evento = infoEvento;
-                req.endereco = new Endereco('1', String.valueOf(localizacaoEvento.latitude), String.valueOf(localizacaoEvento.longitude));
+                req.evento.endereco = new Endereco((char) statusEndereco, String.valueOf(localizacaoEvento.latitude), String.valueOf(localizacaoEvento.longitude));
+
+                btnConfirmarEvento.setVisibility(View.GONE);
+                progressBar2.setVisibility(View.VISIBLE);
 
                 apiService.adicionarEvento("application/json", apiConfig.token, req)
                         .enqueue(new Callback<Resultado>() {
@@ -188,17 +203,21 @@ public class EventInfoActivity extends AppCompatActivity implements InterfaceCom
 
                                     finish();
                                 }
+                                btnConfirmarEvento.setVisibility(View.VISIBLE);
+                                progressBar2.setVisibility(View.GONE);
                             }
 
                             @Override
                             public void onFailure(Call<Resultado> call, Throwable t) {
                                 Log.e("Error", "O erro foi: " + t.toString());
+                                btnConfirmarEvento.setVisibility(View.VISIBLE);
+                                progressBar2.setVisibility(View.GONE);
                             }
                         });
             }
             else
             {
-                Toast toast = Toast.makeText(getApplicationContext(), "Houve um erro ao buscar os eventos", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(), "Preencha todos os dados para prosseguir", Toast.LENGTH_SHORT);
                 toast.show();
             }
         }
