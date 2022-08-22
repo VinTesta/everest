@@ -138,17 +138,17 @@ public class Evento
                         String selectedDateTime = selectedday+" de "+meses.get(selectedmonth)+" de "+selectedyear+" às "+strSelectedHour+":"+strSelectedMinute;
                         textView.setText(selectedDateTime);
 
-                        String str = strSelectedday+"/"+strSelectedmonth+"/"+selectedyear+" "+strSelectedHour+":"+strSelectedMinute+":00";
+                        String str = strSelectedmonth+"/"+strSelectedday+"/"+selectedyear+" "+strSelectedHour+":"+strSelectedMinute+":00";
 
-                        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                        Date date = null;
+                        SimpleDateFormat df = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss");
+                        Date date = new Date(str);
                         try {
+                            Log.e("Data", "String data: " + df.parse(str));
                             date = df.parse(str);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
                         long epoch = date.getTime();
-
                         switch (selectData)
                         {
                             case "inicio":

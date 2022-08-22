@@ -24,7 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ApiConfig {
-    public static String URL_BASE = "https://everest-api-v1.herokuapp.com/";
+    public static String URL_BASE = "https://everest-api-v2.herokuapp.com/";
     public static String token = "";
     public static Usuario usuarioApi = null;
     public DatabaseReference mDatabase;

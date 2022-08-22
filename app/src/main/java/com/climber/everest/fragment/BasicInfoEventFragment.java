@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -137,15 +138,12 @@ public class BasicInfoEventFragment extends Fragment {
         editTextDescricao = (EditText) view.findViewById(R.id.editTextDescricao);
         editTextTitulo = (EditText) view.findViewById(R.id.editTextTitulo);
 
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        String dataHoraAtual = df.format(new Date());
-        Date date = null;
-        try {
-            date = df.parse(dataHoraAtual);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        long epoch = date.getTime();
+        SimpleDateFormat formatDate = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss");
+
+        java.util.Date dataDefault = new java.util.Date();
+
+        dateInit.setText(String.valueOf(formatDate.format(dataDefault)));
+        dateFinish.setText(String.valueOf(formatDate.format(dataDefault)));
 
         editTextTitulo.addTextChangedListener(new TextWatcher() {
             @Override
@@ -220,18 +218,32 @@ public class BasicInfoEventFragment extends Fragment {
                         .enqueue(new Callback<Resultado>() {
                             @Override
                             public void onResponse(Call<Resultado> call, Response<Resultado> response) {
-                                Log.e(TAG, response.toString());
 
                                 if(response.isSuccessful())
                                 {
                                     resReq = response.body();
 
+                                    int faltante = 13 - String.valueOf(Long.parseLong(resReq.evento.dataInicioEvento)).length();
+                                    for( int i = 0; i < faltante; i++)
+                                    {
+                                        resReq.evento.dataInicioEvento = String.valueOf(Long.parseLong(resReq.evento.dataInicioEvento) * 10);
+                                    }
+                                    faltante = 13 - String.valueOf(Long.parseLong(resReq.evento.dataFimEvento)).length();
+                                    for( int i = 0; i < faltante; i++)
+                                    {
+                                        resReq.evento.dataFimEvento = String.valueOf(Long.parseLong(resReq.evento.dataFimEvento) * 10);
+                                    }
+                                    java.util.Date dataInicio = new java.util.Date((long) (Long.parseLong(resReq.evento.dataInicioEvento)));
+                                    java.util.Date dataFim = new java.util.Date((long) (Long.parseLong(resReq.evento.dataFimEvento)));
 
-//                                    dateInit.setText(resReq.evento.);
-//                                    dateFinish;
+                                    dateInit.setText(String.valueOf(formatDate.format(dataInicio)));
+                                    dateFinish.setText(String.valueOf(formatDate.format(dataFim)));
 
                                     editTextDescricao.setText(resReq.evento.descevento);
                                     editTextTitulo.setText(resReq.evento.tituloevento);
+
+                                    listener.setEvento(resReq.evento);
+                                    infoEvento = resReq.evento;
                                 }
 
                                 backloadInfo.setVisibility(View.GONE);
@@ -239,7 +251,6 @@ public class BasicInfoEventFragment extends Fragment {
 
                             @Override
                             public void onFailure(Call<Resultado> call, Throwable t) {
-                                Log.e("Error", "O erro foi: " + t.toString());
                                 backloadInfo.setVisibility(View.GONE);
                             }
                         });

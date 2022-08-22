@@ -94,6 +94,8 @@ public class EventInfoActivity extends AppCompatActivity implements InterfaceCom
         Bundle dados = getIntent().getExtras();
         if(dados != null) {
             String idevento = dados.getString("idevento");
+
+            infoEvento.setIdevento(Integer.parseInt(idevento));
             basicInfo = BasicInfoEventFragment.newInstance(idevento);
             addressInfo = AddressEventFragment.newInstance(idevento);
         }
@@ -159,8 +161,13 @@ public class EventInfoActivity extends AppCompatActivity implements InterfaceCom
         btnConfirmarEvento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                adicionaEvento(infoEvento);
+                if(infoEvento.idevento == null || infoEvento.idevento == 0) {
+                    adicionaEvento(infoEvento);
+                }
+                else
+                {
+                    alterarEvento(infoEvento);
+                }
             }
         });
     }
@@ -192,7 +199,6 @@ public class EventInfoActivity extends AppCompatActivity implements InterfaceCom
                         .enqueue(new Callback<Resultado>() {
                             @Override
                             public void onResponse(Call<Resultado> call, Response<Resultado> response) {
-                                Log.e(TAG, response.toString());
 
                                 if(response.isSuccessful())
                                 {
@@ -209,7 +215,61 @@ public class EventInfoActivity extends AppCompatActivity implements InterfaceCom
 
                             @Override
                             public void onFailure(Call<Resultado> call, Throwable t) {
-                                Log.e("Error", "O erro foi: " + t.toString());
+                                btnConfirmarEvento.setVisibility(View.VISIBLE);
+                                progressBar2.setVisibility(View.GONE);
+                            }
+                        });
+            }
+            else
+            {
+                Toast toast = Toast.makeText(getApplicationContext(), "Preencha todos os dados para prosseguir", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+    }
+
+    private void alterarEvento(Evento evento)
+    {
+        ApiService apiService = retrofit.create(ApiService.class);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            currentUser.reload();
+
+            if(
+                    apiConfig.token != "" &&
+                            (evento.getDataFimEvento() != "" && evento.getDataFimEvento() != null) &&
+                            (evento.getDataInicioEvento() != "" && evento.getDataInicioEvento() != null) &&
+                            evento.getTituloevento() != ""
+            )
+            {
+
+                RequestBody req = new RequestBody();
+                req.evento = infoEvento;
+                req.evento.endereco = new Endereco((char) statusEndereco, String.valueOf(localizacaoEvento.latitude), String.valueOf(localizacaoEvento.longitude));
+
+                btnConfirmarEvento.setVisibility(View.GONE);
+                progressBar2.setVisibility(View.VISIBLE);
+
+                apiService.alterarEvento("application/json", apiConfig.token, req.evento)
+                        .enqueue(new Callback<Resultado>() {
+                            @Override
+                            public void onResponse(Call<Resultado> call, Response<Resultado> response) {
+
+                                if(response.isSuccessful())
+                                {
+                                    resReq = response.body();
+
+                                    Toast toast = Toast.makeText(getApplicationContext(), resReq.mensagem, Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    finish();
+                                }
+                                btnConfirmarEvento.setVisibility(View.VISIBLE);
+                                progressBar2.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onFailure(Call<Resultado> call, Throwable t) {
                                 btnConfirmarEvento.setVisibility(View.VISIBLE);
                                 progressBar2.setVisibility(View.GONE);
                             }

@@ -41,4 +41,7 @@ public interface ApiService {
 
     @POST("/evento/buscaInfoEvento")
     Call<Resultado> buscaInfoEvento(@Header("Content-type") String content_type, @Header("Authorization") String auth, @Body RequestBody infoEvento);
+
+    @POST("/evento/alterarEvento")
+    Call<Resultado> alterarEvento(@Header("Content-type") String content_type, @Header("Authorization") String auth, @Body Evento infoEvento);
 }

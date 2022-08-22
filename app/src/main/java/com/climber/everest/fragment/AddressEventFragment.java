@@ -245,16 +245,12 @@ public class AddressEventFragment extends Fragment implements OnMapReadyCallback
                         .enqueue(new Callback<Resultado>() {
                             @Override
                             public void onResponse(Call<Resultado> call, Response<Resultado> response) {
-                                Log.e(TAG, response.toString());
-
                                 if(response.isSuccessful())
                                 {
                                     resReq = response.body();
 
-                                    Log.e("O ID", "Id end: "+ resReq.evento.endereco.getIdeventoendereco());
                                     if(resReq.evento.endereco.getLatitude() != null && resReq.evento.endereco.getLongitude() != null)
                                     {
-                                        Log.e("Tem end?", "Tem endereço");
                                         selecionaLocal(new LatLng(parseDouble(resReq.evento.endereco.getLatitude()), parseDouble(resReq.evento.endereco.getLongitude())));
                                     }
                                 }
@@ -264,7 +260,6 @@ public class AddressEventFragment extends Fragment implements OnMapReadyCallback
 
                             @Override
                             public void onFailure(Call<Resultado> call, Throwable t) {
-                                Log.e("Error", "O erro foi: " + t.toString());
                                 backloadAddress.setVisibility(View.GONE);
                             }
                         });
