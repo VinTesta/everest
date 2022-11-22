@@ -9,6 +9,7 @@ android {
         applicationId "com.climber.everest"
         minSdk 19
         targetSdk 32
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
 
@@ -27,6 +28,10 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 }
 
@@ -55,4 +60,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
+    implementation 'com.android.tools:r8:3.3.14-dev'
+    implementation 'com.android.support:multidex:1.0.3'
 }

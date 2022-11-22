@@ -3,7 +3,9 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven{ url "https://storage.googleapis.com/r8-releases/raw" }
     }
 }
+
 rootProject.name = "everest"
 include ':app'

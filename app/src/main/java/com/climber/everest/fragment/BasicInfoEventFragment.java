@@ -140,11 +140,6 @@ public class BasicInfoEventFragment extends Fragment {
 
         SimpleDateFormat formatDate = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss");
 
-        java.util.Date dataDefault = new java.util.Date();
-
-        dateInit.setText(String.valueOf(formatDate.format(dataDefault)));
-        dateFinish.setText(String.valueOf(formatDate.format(dataDefault)));
-
         editTextTitulo.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {

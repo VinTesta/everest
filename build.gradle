@@ -2,10 +2,12 @@
 buildscript {
     repositories {
         google()
+        maven { url "https://storage.googleapis.com/r8-releases/raw" }
     }
 
     dependencies {
         classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.android.tools:r8:3.3.14-dev'
     }
 }
 
@@ -20,6 +22,7 @@ allprojects {
         mavenCentral()
         maven { url "https://jitpack.io" }
         maven { url "https://maven.google.com" }
+        maven { url "https://storage.googleapis.com/r8-releases/raw" }
     }
 }
 

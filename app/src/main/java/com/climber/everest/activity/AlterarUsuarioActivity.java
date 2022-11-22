@@ -91,7 +91,6 @@ public class AlterarUsuarioActivity extends AppCompatActivity {
                                     public void onResponse(Call<Resultado> call, Response<Resultado> response) {
                                         if (response.isSuccessful()) {
                                             resReq = response.body();
-
                                             if (resReq.status.equals("200")) {
 
                                                 Log.d("value", "User re-authenticated.");
@@ -107,7 +106,7 @@ public class AlterarUsuarioActivity extends AppCompatActivity {
                                                             UsuarioRepository ur = new UsuarioRepository();
                                                             ur.loadToken(_usuarioLogado.getEmailusuario(), inputSenha.getText().toString());
 
-                                                            Toast.makeText(AlterarUsuarioActivity.this.getApplicationContext(), resReq.mensagem, Toast.LENGTH_SHORT).show();
+//                                                            Toast.makeText(AlterarUsuarioActivity.this.getApplicationContext(), resReq.mensagem, Toast.LENGTH_SHORT).show();
                                                             finish();
 
                                                             btnAlterar.setEnabled(true);
